@@ -71,7 +71,7 @@ export class LoginComponent {
         class: 'text-danger',
         position: 'topRight',
         message: 'Los datos del formulario no son válidos'
-      })
+      });
     }
   }
 
