@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^14.1.1",
     "@popperjs/core": "^2.11.7",
     "jquery": "^3.6.4",
+    "ngx-tinymce": "^15.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

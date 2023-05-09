@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from 'src/app/service/cliente.service';
-import { AdminService } from "src/app/service/admin.service";
+import { ClienteService } from 'src/app/services/cliente.service';
+import { AdminService } from "src/app/services/admin.service";
 
 declare var iziToast:any;
 declare var JQuery:any;

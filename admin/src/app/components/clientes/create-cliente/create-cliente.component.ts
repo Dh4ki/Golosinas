@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminService } from 'src/app/service/admin.service';
-import { ClienteService } from 'src/app/service/cliente.service';
+import { AdminService } from 'src/app/services/admin.service';
+import { ClienteService } from 'src/app/services/cliente.service';
 
 
 declare var iziToast:any;
