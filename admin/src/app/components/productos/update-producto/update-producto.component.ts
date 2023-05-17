@@ -55,7 +55,7 @@ export class UpdateProductoComponent implements OnInit{
           }
         )
       }
-    )
+    );
   }
 
   actualizar(actualizarForm:any){
