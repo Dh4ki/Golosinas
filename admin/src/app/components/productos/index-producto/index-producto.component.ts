@@ -3,6 +3,8 @@ import { GLOBAL } from "src/app/services/GLOBAL";
 import { ProductoService } from 'src/app/services/producto.service';
 
 declare var iziToast:any;
+declare var JQuery:any;
+declare var $:any;
 
 @Component({
   selector: 'app-index-producto',
@@ -18,6 +20,8 @@ export class IndexProductoComponent  implements OnInit {
   public url;
   public page = 1;
   public pageSize = 10;
+
+  public load_btn=false;
 
   constructor(
     private _productoService: ProductoService
@@ -60,6 +64,37 @@ export class IndexProductoComponent  implements OnInit {
   resetear(){
     this.filtro='';
     this.init_Data();
+  }
+
+  eliminar(id:any){
+    this.load_btn=true;
+    this._productoService.eliminar_producto_admin(id,this.token).subscribe(
+      response=>{
+        iziToast.show({
+          title: 'SUCCESS',
+          titleColor: '#FFD700',
+          theme: 'dark',
+          class: 'text-success',
+          position: 'topRight',
+          message: 'Se eliminó correctamente el producto.'
+        });
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        this.load_btn=false;
+        this.init_Data();
+      },error=>{
+        iziToast.show({
+          title: 'SUCCESS',
+          titleColor: '#FFD700',
+          theme: 'dark',
+          class: 'text-success',
+          position: 'topRight',
+          message: 'Ocurrió un error en el servidor.'
+        });
+        console.log(error);
+        this.load_btn=false;
+      }
+    )
   }
 
 }
