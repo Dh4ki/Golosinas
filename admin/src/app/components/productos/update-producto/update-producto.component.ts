@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component,OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GLOBAL } from 'src/app/services/GLOBAL';
 import { AdminService } from 'src/app/services/admin.service';
 import { ProductoService } from 'src/app/services/producto.service';
 
@@ -8,69 +9,86 @@ declare var JQuery:any;
 declare var $:any;
 
 @Component({
-  selector: 'app-create-producto',
-  templateUrl: './create-producto.component.html',
-  styleUrls: ['./create-producto.component.css']
+  selector: 'app-update-producto',
+  templateUrl: './update-producto.component.html',
+  styleUrls: ['./update-producto.component.css']
 })
-export class CreateProductoComponent implements OnInit {
+export class UpdateProductoComponent implements OnInit{
 
-  public producto : any={
-    categoria: ''
-  };
-  public file:any=undefined;
-  public imgSelect:any | ArrayBuffer='assets/img/01.jpg';
-  public config: any={};
+  public producto : any = {};
+  public config : any = {};
   public token;
+  public imgSelect: any | ArrayBuffer;
   public load_btn=false;
+  public id:any;
+  public url;
+  public file:any=undefined;
 
   constructor(
-    private _productoService:ProductoService,
-    private _adminService:AdminService,
+    private _adminService: AdminService,
+    private _route: ActivatedRoute,
+    private _productoService: ProductoService,
     private _router: Router
   ){
     this.config ={
       height: 500
     }
-    this.token=this._adminService.getToken();
+    this.token=localStorage.getItem('token');
+    this.url = GLOBAL.url;
   }
 
   ngOnInit():void{
-  }
-
-  registro(registroForm:any){
-    if (registroForm.valid) {
-      if (this.file == undefined) {
-        iziToast.show({
-          title: 'ERROR',
-          titleColor: '#FFA500',
-          theme: 'dark',
-          class: 'text-danger',
-          position: 'topRight',
-          message: 'Debe subir una portada para registrar el producto'
-        });
-      }else{
-        console.log(this.producto);
-        console.log(this.file);
-        this.load_btn=true;
-        this._productoService.registro_producto_admin(this.producto,this.file,this.token).subscribe(
+    this._route.params.subscribe(
+      params=>{
+        this.id = params['id'];
+        console.log(this.id);
+        this._productoService.obtener_producto_admin(this.id, this.token).subscribe(
           response=>{
-            iziToast.show({
-              title: 'SUCCESS',
-              titleColor: '#FFD700',
-              theme: 'dark',
-              class: 'text-success',
-              position: 'topRight',
-              message: 'Se registró correctamente el nuevo producto.'
-            });
-            this.load_btn=false;
-            this._router.navigate(['/panel/productos']);
+            if (response.data == undefined) {
+              this.producto = undefined;
+            }else{
+              this.producto = response.data;
+              this.imgSelect = this.url+'obtener_portada/'+this.producto.portada;
+            }
           },error=>{
             console.log(error);
-            this.load_btn=false;
           }
-        );
+        )
       }
+    )
+  }
 
+  actualizar(actualizarForm:any){
+    if (actualizarForm.valid) {
+      var data:any = {};
+      if (this.file != undefined) {
+        data.portada = this.file;
+      }
+      data.titulo = this.producto.titulo;
+      data.stock = this.producto.stock;
+      data.precio = this.producto.precio;
+      data.categoria = this.producto.categoria;
+      data.descripcion = this.producto.descripcion;
+      data.contenido = this.producto.contenido;
+      this.load_btn=true;
+      this._productoService.actualizar_producto_admin(data,this.id,this.token).subscribe(
+        response=>{
+          console.log(response);
+          iziToast.show({
+            title: 'SUCCESS',
+            titleColor: '#FFD700',
+            theme: 'dark',
+            class: 'text-success',
+            position: 'topRight',
+            message: 'Se actualizó correctamente el producto.'
+          });
+          this.load_btn=false;
+          this._router.navigate(['/panel/productos']);
+        },error=>{
+          console.log(error);
+          this.load_btn=false;
+        }
+      )
     }else{
       iziToast.show({
         title: 'ERROR',
@@ -81,12 +99,9 @@ export class CreateProductoComponent implements OnInit {
         message: 'Los datos del formulario no son válidos'
       });
       this.load_btn=false;
-      $('#input-portada').text('Seleccionar imagen');
-        this.imgSelect='assets/img/01.jpg';
-        this.file=undefined;
     }
   }
-
+  
   fileChangeEvent(event:any):void{
     var file;
     if (event.target.files && event.target.files[0]) {
@@ -138,5 +153,4 @@ export class CreateProductoComponent implements OnInit {
     }
     console.log(this.file);
   }
-
 }
