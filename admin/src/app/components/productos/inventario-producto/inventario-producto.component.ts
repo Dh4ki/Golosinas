@@ -63,7 +63,7 @@ export class InventarioProductoComponent implements OnInit {
     this._productoService.eliminar_inventario_producto_admin(id,this.token).subscribe(
       response=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',
@@ -76,7 +76,7 @@ export class InventarioProductoComponent implements OnInit {
         this.init_data();
       },error=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',
@@ -101,7 +101,7 @@ export class InventarioProductoComponent implements OnInit {
       this._productoService.registro_inventario_producto_admin(data,this.token).subscribe(
         response=>{
           iziToast.show({
-            title: 'SUCCESS',
+            title: 'ÉXITO',
             titleColor: '#FFD700',
             theme: 'dark',
             class: 'text-success',

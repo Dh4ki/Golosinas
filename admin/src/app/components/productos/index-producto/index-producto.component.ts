@@ -19,7 +19,7 @@ export class IndexProductoComponent  implements OnInit {
   public productos : Array<any>=[];
   public url;
   public page = 1;
-  public pageSize = 10;
+  public pageSize = 15;
 
   public load_btn=false;
 
@@ -71,7 +71,7 @@ export class IndexProductoComponent  implements OnInit {
     this._productoService.eliminar_producto_admin(id,this.token).subscribe(
       response=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',
@@ -84,7 +84,7 @@ export class IndexProductoComponent  implements OnInit {
         this.init_Data();
       },error=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',

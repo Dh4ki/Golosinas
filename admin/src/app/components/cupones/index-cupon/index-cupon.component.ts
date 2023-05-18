@@ -46,7 +46,7 @@ export class IndexCuponComponent implements OnInit{
     this._cuponService.eliminar_cupon_admin(id,this.token).subscribe(
       response=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',

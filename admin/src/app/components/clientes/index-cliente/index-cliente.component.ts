@@ -88,7 +88,7 @@ export class IndexClienteComponent implements OnInit {
     this._clienteService.eliminar_cliente_admin(id,this.token).subscribe(
       response=>{
         iziToast.show({
-          title: 'SUCCESS',
+          title: 'ÉXITO',
           titleColor: '#FFD700',
           theme: 'dark',
           class: 'text-success',

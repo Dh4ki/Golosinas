@@ -55,7 +55,7 @@ export class EditClienteComponent implements OnInit{
       this._clienteService.actualizar_cliente_admin(this.id,this.cliente,this.token).subscribe(
         response=>{
           iziToast.show({
-            title: 'SUCCESS',
+            title: 'ÉXITO',
             titleColor: '#FFD700',
             theme: 'dark',
             class: 'text-success',

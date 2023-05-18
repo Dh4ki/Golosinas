@@ -77,7 +77,7 @@ export class ConfigComponent implements OnInit{
       this._adminService.actualizar_config_admin("6465730561ae11aaf0e2ebd3",data,this.token).subscribe(
         response=>{
           iziToast.show({
-            title: 'SUCCESS',
+            title: 'ÉXITO',
             titleColor: '#FFD700',
             theme: 'dark',
             class: 'text-success',

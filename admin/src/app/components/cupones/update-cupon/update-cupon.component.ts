@@ -54,7 +54,7 @@ export class UpdateCuponComponent implements OnInit{
       this._cuponService.actualizar_cupon_admin(this.id, this.cupon, this.token).subscribe(
         response=>{
           iziToast.show({
-            title: 'SUCCESS',
+            title: 'ÉXITO',
             titleColor: '#FFD700',
             theme: 'dark',
             class: 'text-success',

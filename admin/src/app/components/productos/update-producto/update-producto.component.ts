@@ -80,9 +80,8 @@ export class UpdateProductoComponent implements OnInit{
       this.load_btn=true;
       this._productoService.actualizar_producto_admin(data,this.id,this.token).subscribe(
         response=>{
-          console.log(response);
           iziToast.show({
-            title: 'SUCCESS',
+            title: 'ÉXITO',
             titleColor: '#FFD700',
             theme: 'dark',
             class: 'text-success',

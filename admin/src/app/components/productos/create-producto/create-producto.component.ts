@@ -62,7 +62,7 @@ export class CreateProductoComponent implements OnInit {
         this._productoService.registro_producto_admin(this.producto,this.file,this.token).subscribe(
           response=>{
             iziToast.show({
-              title: 'SUCCESS',
+              title: 'ÉXITO',
               titleColor: '#FFD700',
               theme: 'dark',
               class: 'text-success',
