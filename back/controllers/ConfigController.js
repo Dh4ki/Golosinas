@@ -76,8 +76,14 @@ const obtener_logo =async function(req,res){
     });
 }
 
+const obtener_config_publico = async function(req,res){
+    let reg = await Config.findById({_id:"6465730561ae11aaf0e2ebd3"});
+    res.status(200).send({data:reg});
+}
+
 module.exports = {
     actualizar_config_admin,
     obtener_config_admin,
-    obtener_logo
+    obtener_logo,
+    obtener_config_publico
 }

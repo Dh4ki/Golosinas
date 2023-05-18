@@ -23,6 +23,7 @@ export class UpdateProductoComponent implements OnInit{
   public id:any;
   public url;
   public file:any=undefined;
+  public config_global : any = {};
 
   constructor(
     private _adminService: AdminService,
@@ -35,6 +36,12 @@ export class UpdateProductoComponent implements OnInit{
     }
     this.token=localStorage.getItem('token');
     this.url = GLOBAL.url;
+    this._adminService.obtener_config_publico().subscribe(
+      response=>{
+        this.config_global = response.data;
+        console.log(this.config_global);
+      }
+    );
   }
 
   ngOnInit():void{
