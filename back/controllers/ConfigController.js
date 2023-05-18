@@ -6,7 +6,7 @@ const obtener_config_admin = async function(req,res){
     if (req.user) {
         if (req.user.role=='admin') {
 
-            let reg = await Config.findById({_id:"646550597b183a82ef66b1e8"});
+            let reg = await Config.findById({_id:"6465730561ae11aaf0e2ebd3"});
             res.status(200).send({data:reg});
         }else{
             res.status(500).send({message: 'NoAccess'});
@@ -19,7 +19,6 @@ const obtener_config_admin = async function(req,res){
 const actualizar_config_admin = async function(req,res){
     if (req.user) {
         if (req.user.role=='admin') {
-
             let data = req.body;
 
             if (req.files) {
@@ -29,7 +28,7 @@ const actualizar_config_admin = async function(req,res){
                 var name = img_path.split('\\');
                 var logo_name = name[2];
 
-                let reg = await Config.findByIdAndUpdate({_id:"646550597b183a82ef66b1e8"},{
+                let reg = await Config.findByIdAndUpdate({_id:"6465730561ae11aaf0e2ebd3"},{
                     categorias: JSON.parse(data.categorias),
                     titulo: data.titulo,
                     serie: data.serie,
@@ -46,7 +45,7 @@ const actualizar_config_admin = async function(req,res){
                 res.status(200).send({data:reg});
             }else{
                 console.log('no hay imagen');
-                let reg = await Config.findByIdAndUpdate({_id:"646550597b183a82ef66b1e8"},{
+                let reg = await Config.findByIdAndUpdate({_id:"6465730561ae11aaf0e2ebd3"},{
                     categorias: data.categorias,
                     titulo: data.titulo,
                     serie: data.serie,
@@ -54,6 +53,7 @@ const actualizar_config_admin = async function(req,res){
                 });
                 res.status(200).send({data:reg});
             }
+            
         }else{
             res.status(500).send({message: 'NoAccess'});
         }

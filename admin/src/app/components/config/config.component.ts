@@ -74,7 +74,7 @@ export class ConfigComponent implements OnInit{
         logo: this.file
       }
       console.log(data);
-      this._adminService.actualizar_config_admin("646550597b183a82ef66b1e8",data,this.token).subscribe(
+      this._adminService.actualizar_config_admin("6465730561ae11aaf0e2ebd3",data,this.token).subscribe(
         response=>{
           iziToast.show({
             title: 'SUCCESS',
@@ -154,4 +154,9 @@ export class ConfigComponent implements OnInit{
   ngDoCheck():void{
     $('.cs-file-drop-preview').html("<img src="+this.imgSelect+">");
   }
+  
+  eliminar_categoria(idx:any){
+    this.config.categorias.splice(idx,1);
+  }
+
 }
