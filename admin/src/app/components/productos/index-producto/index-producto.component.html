@@ -27,9 +27,14 @@
             <!-- Button addon on the right -->
             <div class="input-group">
                 <input class="form-control mr-3" type="text" placeholder="Título de producto" name="filtro" [(ngModel)]="filtro">
-                <button class="btn btn-primary mr-3" type="button" (click)="filtrar()">Filtrar</button>
-                <button class="btn btn-info" type="button" (click)="resetear()">Resetear</button>
+                <div class="input-group-append">
+                  <button class="btn btn-primary mr-3" type="button" (click)="filtrar()">Filtrar</button>
+                  <button class="btn btn-info" type="button" (click)="resetear()">Resetear</button>
+                </div>
             </div>
+        </div>
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" (click)="donwload_excel()">Exportar a excel</button>
         </div>
     </div>
   </div>
