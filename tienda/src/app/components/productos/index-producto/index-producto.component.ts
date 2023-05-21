@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 
@@ -19,10 +20,12 @@ export class IndexProductoComponent implements OnInit{
   public filter_producto='';
   public load_data=true;
   public url;
-  
+  public filter_cat_productos = 'todos';
+  public route_categoria:any;
 
   constructor(
-    private _clienteService : ClienteService
+    private _clienteService : ClienteService,
+    private _route : ActivatedRoute
   ){
     this.url = GLOBAL.url;
     this._clienteService.obtener_config_publico().subscribe(
@@ -30,10 +33,26 @@ export class IndexProductoComponent implements OnInit{
         this.config_global = response.data;
       }
     );
-    this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
-      response=>{
-        this.productos = response.data;
-        this.load_data = false;
+
+    this._route.params.subscribe(
+      params=>{
+        this.route_categoria = params['categoria'];
+        if (this.route_categoria) {
+          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+            response=>{
+              this.productos = response.data;
+              this.productos = this.productos.filter(item=>item.categoria.toLowerCase() == this.route_categoria);
+              this.load_data = false;
+            }
+          );
+        }else{
+          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+            response=>{
+              this.productos = response.data;
+              this.load_data = false;
+            }
+          );
+        }
       }
     );
   }
@@ -86,22 +105,37 @@ export class IndexProductoComponent implements OnInit{
   }
 
   buscar_precios(){
-
     this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
       response=>{
         this.productos = response.data;
         let min = parseInt($('.cs-range-slider-value-min').val());
         let max = parseInt($('.cs-range-slider-value-max').val());
-
-        console.log(min);
-        console.log(max);
-
         this.productos = this.productos.filter((item)=>{
           return item.precio >= min &&
                 item.precio <= max
         });
       }
     );
+  }
+
+  buscar_categoria(){
+    if (this.filter_cat_productos == 'todos') {
+      this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+        response=>{
+          this.productos = response.data;
+          this.load_data = false;
+        }
+      );
+    }else{
+      this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+        response=>{
+          this.productos = response.data;
+          this.productos = this.productos.filter(item=>item.categoria == this.filter_cat_productos);
+          this.load_data = false;
+        }
+      );
+      
+    }
   }
 
 }
