@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 
 declare var noUiSlider:any;
@@ -14,14 +15,25 @@ export class IndexProductoComponent implements OnInit{
 
   public config_global: any = {};
   public filter_categoria = '';
+  public productos :Array<any>=[];
+  public filter_producto='';
+  public load_data=true;
+  public url;
+  
 
   constructor(
     private _clienteService : ClienteService
   ){
+    this.url = GLOBAL.url;
     this._clienteService.obtener_config_publico().subscribe(
       response=>{
         this.config_global = response.data;
-        console.log(this.config_global);
+      }
+    );
+    this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+      response=>{
+        this.productos = response.data;
+        this.load_data = false;
       }
     );
   }
@@ -49,7 +61,6 @@ export class IndexProductoComponent implements OnInit{
   }
 
   buscar_categorias(){
-    console.log(this.filter_categoria);
     if (this.filter_categoria) {
       var search = new RegExp(this.filter_categoria, 'i');    
       /*filter busca un item en un array*/
@@ -63,6 +74,15 @@ export class IndexProductoComponent implements OnInit{
         }
       );
     }
+  }
+
+  buscar_producto(){
+    this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+      response=>{
+        this.productos = response.data;
+        this.load_data = false;
+      }
+    );
   }
 
 }

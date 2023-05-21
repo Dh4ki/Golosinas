@@ -260,6 +260,13 @@ const eliminar_imagen_galeria_admin = async function(req,res){
     }
 }
 
+//-------- MÉTODOS PÚBLICOS ------//
+const listar_productos_publico = async function(req,res){
+    var filtro = req.params['filtro'];
+    let reg = await Producto.find({titulo: new RegExp(filtro, 'i')});
+    res.status(200).send({data:reg});
+}
+
 module.exports = {
     registro_producto_admin,
     listar_productos_admin,
@@ -272,5 +279,6 @@ module.exports = {
     registro_inventario_producto_admin,
     actualizar_producto_variedades_admin,
     agregar_imagen_galeria_admin,
-    eliminar_imagen_galeria_admin
+    eliminar_imagen_galeria_admin,
+    listar_productos_publico
 }

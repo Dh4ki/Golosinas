@@ -66,4 +66,9 @@ export class ClienteService {
     return this._http.get(this.url+'obtener_config_publico',{headers:headers});
   }
 
+  listar_productos_publico(filtro:any):Observable<any>{
+    let headers = new HttpHeaders().set('Content-Type','application/json');
+    return this._http.get(this.url+'listar_productos_publico/'+filtro,{headers:headers});
+  }
+
 }
