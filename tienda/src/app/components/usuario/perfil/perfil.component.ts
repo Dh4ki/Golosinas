@@ -4,8 +4,6 @@ import { ClienteService } from 'src/app/services/cliente.service';
 declare var iziToast:any;
 declare var $:any;
 
-
-
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
