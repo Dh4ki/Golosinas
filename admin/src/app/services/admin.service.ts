@@ -27,13 +27,10 @@ export class AdminService {
   }
 
   public isAuthenticated(allowRoles : string[]):boolean{
-
     const token = localStorage.getItem('token');
-    
     if (!token) {
       return false;
     }
-
     try {
       const helper = new JwtHelperService();
       var decodedToken = helper.decodeToken(token|| "");
@@ -51,9 +48,6 @@ export class AdminService {
       localStorage.removeItem('token');
       return false;
     }
-
-    
-
     return allowRoles.includes(decodedToken['role']);
   }
 
@@ -83,4 +77,5 @@ export class AdminService {
     let headers = new HttpHeaders().set('Content-Type','application/json');
     return this._http.get(this.url+'obtener_config_publico',{headers:headers});
   }
+  
 }
