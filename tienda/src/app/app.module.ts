@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/usuario/perfil/perfil.component';
 import { SidebarComponent } from './components/usuario/sidebar/sidebar.component';
 import { IndexProductoComponent } from './components/productos/index-producto/index-producto.component';
+import { ShowProductoComponent } from './components/productos/show-producto/show-producto.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { IndexProductoComponent } from './components/productos/index-producto/in
     PerfilComponent,
     SidebarComponent,
     IndexProductoComponent,
+    ShowProductoComponent,
 
   ],
   imports: [

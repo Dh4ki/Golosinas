@@ -12,7 +12,7 @@ const registro_producto_admin=async function(req,res){
             var img_path = req.files.portada.path;
             var name = img_path.split('\\');
             var portada_name = name[2];
-            data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^w-]+/g,'');
+            data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
             data.portada = portada_name;
             let reg = await Producto.create(data);
 
@@ -267,6 +267,12 @@ const listar_productos_publico = async function(req,res){
     res.status(200).send({data:reg});
 }
 
+const obtener_productos_slug_publico = async function(req,res){
+    var slug = req.params['slug'];
+    let reg = await Producto.findOne({slug: slug});
+    res.status(200).send({data:reg});
+}
+
 module.exports = {
     registro_producto_admin,
     listar_productos_admin,
@@ -280,5 +286,6 @@ module.exports = {
     actualizar_producto_variedades_admin,
     agregar_imagen_galeria_admin,
     eliminar_imagen_galeria_admin,
-    listar_productos_publico
+    listar_productos_publico,
+    obtener_productos_slug_publico
 }

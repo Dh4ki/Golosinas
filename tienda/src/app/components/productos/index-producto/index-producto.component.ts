@@ -51,6 +51,7 @@ export class IndexProductoComponent implements OnInit{
         }else{
           this._clienteService.listar_productos_publico('').subscribe(
             response=>{
+              console.log(response);
               this.productos = response.data;
               this.load_data = false;
             }
