@@ -61,7 +61,6 @@ const login_cliente = async function(req,res){
 }
 
 const listar_clientes_filtro_admin = async function(req,res) {
-    console.log(req.user);
     if (req.user) {
         if (req.user.role == 'admin') {
             let tipo = req.params['tipo'];
@@ -88,8 +87,6 @@ const listar_clientes_filtro_admin = async function(req,res) {
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
-
-    
 }
 
 const registro_cliente_admin = async function(req,res){
