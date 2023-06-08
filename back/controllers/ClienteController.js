@@ -233,10 +233,51 @@ const registro_direccion_cliente = async function(req,res) {
                 await Direccion.findByIdAndUpdate({_id: element._id}, {principal:false});
             })
         }
-        
-
         let reg = await Direccion.create(data);
         res.status(200).send({data:reg});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
+const obtener_direcciones_todos_cliente = async function (req,res){
+    if (req.user) {
+        var id = req.params['id'];
+        let direcciones = await Direccion.find({cliente:id}).populate('cliente').sort({createdAt:-1});
+        res.status(200).send({data:direcciones});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
+const cambiar_direccion_principal_cliente = async function (req,res){
+    if (req.user) {
+        var id = req.params['id'];
+        var cliente = req.params['cliente'];
+        let direcciones = await Direccion.find({cliente:cliente});
+        direcciones.forEach(async element=>{
+            await Direccion.findByIdAndUpdate({_id:element._id},{principal:false});
+        });
+
+        await Direccion.findByIdAndUpdate({_id:id},{principal:true});
+        
+        res.status(200).send({data:true});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
+const obtener_direccion_principal_cliente = async function (req,res){
+    if (req.user) {
+        var id = req.params['id'];
+        var direccion = undefined;
+
+        direccion = await Direccion.findOne({cliente:id,princiapl:true});
+        if (direccion == undefined) {
+            res.status(200).send({data:undefined});
+        }else{
+            res.status(200).send({data:direccion});
+        }
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -252,5 +293,7 @@ module.exports = {
     eliminar_cliente_admin,
     obtener_cliente_guest,
     actualizar_perfil_cliente_guest,
-    registro_direccion_cliente
+    registro_direccion_cliente,
+    obtener_direcciones_todos_cliente,
+    cambiar_direccion_principal_cliente,
 }

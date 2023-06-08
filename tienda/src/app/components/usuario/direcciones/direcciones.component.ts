@@ -20,6 +20,7 @@ export class DireccionesComponent implements OnInit{
     distrito: '',
     principal: false
   };
+  public direcciones: Array<any> = [];
 
   public regiones: Array<any> = [];
   public provincias: Array<any> = [];
@@ -28,6 +29,8 @@ export class DireccionesComponent implements OnInit{
   public regiones_arr: Array<any> = [];
   public provincias_arr: Array<any> = [];
   public distritos_arr: Array<any> = [];
+
+  public load_data = true;
 
   constructor(
     private _guestSercice: GuestService,
@@ -56,7 +59,7 @@ export class DireccionesComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    
+    this.obtener_direccion();
   }
 
   select_pais(){
@@ -192,6 +195,31 @@ export class DireccionesComponent implements OnInit{
         message: 'Los datos del formulario no son válidos'
       });
     }
+  }
+
+  obtener_direccion(){
+    this._clienteService.obtener_direcciones_todos_cliente(localStorage.getItem('_id'), this.token).subscribe(
+      response=>{
+        this.direcciones=response.data;
+        this.load_data = false;
+      }
+    );
+  }
+
+  establecer_principal(id:any){
+    this._clienteService.cambiar_direccion_principal_cliente(id, localStorage.getItem('_id'), this.token).subscribe(
+      response=>{
+        iziToast.show({
+          title: 'ÉXITO',
+          titleColor: '#FFD700',
+          theme: 'dark',
+          class: 'text-success',
+          position: 'topRight',
+          message: 'Se actualizó la dirección principal.'
+        });
+        this.obtener_direccion();
+      }
+    )
   }
 
 }
