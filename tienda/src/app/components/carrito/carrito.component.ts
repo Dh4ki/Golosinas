@@ -47,21 +47,16 @@ export class CarritoComponent implements OnInit{
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
     this.venta.cliente = this.id_cliente;
-    this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
-      response=>{
-        this.carrito_arr = response.data;
-        this.calcular_carrito();
-        this.calcular_total('Envio Gratis');
+    
+    this._guestService.get_Envios().subscribe(
+      response =>{
+        this.envios = response;
       }
     );
-      this._guestService.get_Envios().subscribe(
-        response =>{
-          this.envios = response;
-        }
-      );
   }
 
   ngOnInit(): void {
+    this.init_Data();
     setTimeout(()=>{
       new Cleave('#cc-number',{
         creditCard: true,
@@ -99,7 +94,7 @@ export class CarritoComponent implements OnInit{
         const order = await actions.order.capture();
         console.log(order)
         this.venta.transaccion = order.purchase_units[0].payments.capture[0].id;
-        console.log(this.venta);
+        console.log(this.dventa);
         
       },
       onError : (err:any) =>{
@@ -111,6 +106,25 @@ export class CarritoComponent implements OnInit{
     }).render(this.paypalElement.nativeElement);
   
 
+  }
+
+  init_Data(){
+    this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
+      response=>{
+        this.carrito_arr = response.data;
+        this.carrito_arr.forEach(element =>{
+          this.dventa.push({
+            producto: element.producto._id,
+            subtotal: element.producto.precio,
+            variedad: element.variedad,
+            cantidad: element.cantidad,
+            cliente: localStorage.getItem('_id')
+          });
+        });
+        this.calcular_carrito();
+        this.calcular_total('Envio Gratis');
+      }
+    );
   }
 
   get_direccion_principal(){
@@ -127,6 +141,7 @@ export class CarritoComponent implements OnInit{
   }
 
   calcular_carrito(){
+    this.subtotal = 0;
     this.carrito_arr.forEach(element =>{
       this.subtotal = this.subtotal + parseFloat(element.producto.precio);
     });
@@ -145,12 +160,7 @@ export class CarritoComponent implements OnInit{
           message: 'Se eliminó el producto correctamente'
         });
         this.socket.emit('delete-carrito',{data:response.data});
-        this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
-          response=>{
-            this.carrito_arr = response.data;
-            this.calcular_carrito();
-          }
-        );
+        this.init_Data();
       }
     )
   }
