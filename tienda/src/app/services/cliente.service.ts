@@ -111,4 +111,18 @@ export class ClienteService {
     return this._http.post(this.url+'registro_compra_cliente',data,{headers:headers});
   }
 
+  get_token_culqi(data:any):Observable<any>{
+    let headers = new HttpHeaders()
+    .set('Content-Type','application/json')
+    .set('Authorization','Bearer pk_test_02a62259b7414421');
+    return this._http.post('https://secure.culqi.com/v2/tokens',data,{headers:headers});
+  }
+
+  get_charge_culqi(data:any):Observable<any>{
+    let headers = new HttpHeaders()
+    .set('Content-Type','application/json')
+    .set('Authorization','Bearer sk_test_193772d1f6ee71a9');
+    return this._http.post('https://api.culqi.com/v2/charges',data,{headers:headers});
+  }
+
 }
