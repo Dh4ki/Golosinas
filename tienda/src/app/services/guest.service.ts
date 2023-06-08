@@ -26,4 +26,16 @@ export class GuestService {
     return this._http.get(this.url+'listar_productos_recomendados_publico/'+categoria,{headers:headers});
   }
 
+  get_Regiones():Observable<any>{
+    return this._http.get('./assets/regiones.json');
+  }
+
+  get_Distritos():Observable<any>{
+    return this._http.get('./assets/distritos.json');
+  }
+
+  get_Provincias():Observable<any>{
+    return this._http.get('./assets/provincias.json');
+  }
+
 }

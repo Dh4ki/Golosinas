@@ -16,6 +16,7 @@ import { SidebarComponent } from './components/usuario/sidebar/sidebar.component
 import { IndexProductoComponent } from './components/productos/index-producto/index-producto.component';
 import { ShowProductoComponent } from './components/productos/show-producto/show-producto.component';
 import { CarritoComponent } from './components/carrito/carrito.component';
+import { DireccionesComponent } from './components/usuario/direcciones/direcciones.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { CarritoComponent } from './components/carrito/carrito.component';
     IndexProductoComponent,
     ShowProductoComponent,
     CarritoComponent,
+    DireccionesComponent,
 
   ],
   imports: [
