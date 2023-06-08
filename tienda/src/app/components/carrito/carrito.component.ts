@@ -3,6 +3,7 @@ import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { io } from "socket.io-client";
 import { GuestService } from 'src/app/services/guest.service';
+import { Router } from '@angular/router';
 
 declare var iziToast:any;
 declare var Cleave:any;
@@ -36,12 +37,16 @@ export class CarritoComponent implements OnInit{
   public precio_envio: any = "0";
   public venta : any = {};
   public dventa : Array<any> = [];
+  public card_data: any = {};
+  public btn_load = false;
+  public carrito_load = true;
+  public user : any = {};
 
 
   constructor(
     private _clienteService: ClienteService,
     private _guestService: GuestService,
-    private elementRef: ElementRef
+    private _router: Router
   ){
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
@@ -53,6 +58,7 @@ export class CarritoComponent implements OnInit{
         this.envios = response;
       }
     );
+    this.user = JSON.parse(localStorage.getItem('user_data')!);
   }
 
   ngOnInit(): void {
@@ -66,7 +72,7 @@ export class CarritoComponent implements OnInit{
 
       new Cleave('#cc-exp-date',{
         date: true,
-        datePattern: ['m','y']
+        datePattern: ['m','Y']
       });
 
       var sidebar = new StickySidebar('.sidebar-sticky', {topSpacing: 20});
@@ -81,10 +87,10 @@ export class CarritoComponent implements OnInit{
   
           return actions.order.create({
             purchase_units : [{
-              description : 'Nombre del pago',
+              description : 'Pago en El Mundo Azucarado',
               amount : {
                 currency_code : 'USD',
-                value: 999
+                value: this.subtotal
               },
             }]
           });
@@ -98,12 +104,12 @@ export class CarritoComponent implements OnInit{
         this.venta.detalles = this.dventa;
         this._clienteService.registro_compra_cliente(this.venta, this.token).subscribe(
           response =>{
-            console.log(response);
+            this._router.navigate(['/']);
           }
         );
       },
       onError : (err:any) =>{
-       
+    
       },
       onCancel: function (data:any, actions:any) {
         
@@ -126,6 +132,7 @@ export class CarritoComponent implements OnInit{
             cliente: localStorage.getItem('_id')
           });
         });
+        this.carrito_load = false;
         this.calcular_carrito();
         this.calcular_total('Envio Gratis');
       }
@@ -176,6 +183,46 @@ export class CarritoComponent implements OnInit{
     this.venta.envio_precio = parseInt(this.precio_envio);
     this.venta.envio_titulo = envio_titulo;
     console.log(this.venta);
+  }
+
+  get_token_culqi(){
+    let month;
+    let year;
+    let exp_arr= this.card_data.exp.toString().split('/');
+
+    let data = {
+      "card_number": this.card_data.ncard.toString().replace(/ /g, "").substr(0,16),
+      "cvv": this.card_data.cvc,
+      "expiration_month": exp_arr[0],
+      "expiration_year": exp_arr[1].toString().substr(0,4),
+      "email": this.user.email,
+    }
+    console.log(data);
+    this.btn_load = true;
+    this._clienteService.get_token_culqi(data).subscribe(
+      response =>{
+        
+        let charge = {
+          "amount": this.subtotal+'00',
+          "currency_code": "PEN",
+          "email": this.user.email,
+          "source_id": response.id
+        }
+        this._clienteService.get_charge_culqi(charge).subscribe(
+          response=>{
+            this.venta.transaccion = response.id;
+        
+            this.venta.detalles = this.dventa;
+            this._clienteService.registro_compra_cliente(this.venta, this.token).subscribe(
+              response =>{
+                this.btn_load = false;
+                this._router.navigate(['/']);
+              }
+            );
+          }
+        );
+      }
+    );
   }
 
 }
