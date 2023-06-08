@@ -296,4 +296,5 @@ module.exports = {
     registro_direccion_cliente,
     obtener_direcciones_todos_cliente,
     cambiar_direccion_principal_cliente,
+    obtener_direccion_principal_cliente
 }

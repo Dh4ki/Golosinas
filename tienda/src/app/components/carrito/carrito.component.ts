@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { io } from "socket.io-client";
+import { GuestService } from 'src/app/services/guest.service';
 
 declare var iziToast:any;
+declare var Cleave:any;
+declare var StickySidebar:any;
 
 @Component({
   selector: 'app-carrito',
@@ -17,11 +20,15 @@ export class CarritoComponent implements OnInit{
   public carrito_arr : Array<any> = [];
   public url;
   public subtotal = 0;
-  public total_pagar = 0;
+  public total_pagar: any = 0;
   public socket = io('http://localhost:4201');
+  public direccion_principal : any = {};
+  public envios: Array<any> = [];
+  public precio_envio: any = "0";
 
   constructor(
     private _clienteService: ClienteService,
+    private _guestService: GuestService
   ){
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
@@ -32,10 +39,41 @@ export class CarritoComponent implements OnInit{
         this.calcular_carrito();
       }
     );
+      this._guestService.get_Envios().subscribe(
+        response =>{
+          this.envios = response;
+        }
+      );
   }
 
   ngOnInit(): void {
-    
+    setTimeout(()=>{
+      new Cleave('#cc-number',{
+        creditCard: true,
+        onCreditCardTypeChanged: function(type:any){
+        }
+      });
+
+      new Cleave('#cc-exp-date',{
+        date: true,
+        datePattern: ['m','y']
+      });
+
+      var sidebar = new StickySidebar('.sidebar-sticky', {topSpacing: 20});
+    });
+    this.get_direccion_principal();
+  }
+
+  get_direccion_principal(){
+    this._clienteService.obtener_direccion_principal_cliente(localStorage.getItem('_id'),this.token).subscribe(
+      response=>{
+        if (response.data == undefined) {
+          this.direccion_principal = undefined;
+        }else{
+          this.direccion_principal = response.data;
+        }
+      }
+    );
   }
 
   calcular_carrito(){
@@ -65,6 +103,10 @@ export class CarritoComponent implements OnInit{
         );
       }
     )
+  }
+
+  calcular_total(){
+    this.total_pagar = parseFloat(this.subtotal.toString()) + parseFloat(this.precio_envio);
   }
 
 }
