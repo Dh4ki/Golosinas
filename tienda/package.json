@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.7",
     "jquery": "^3.7.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.6.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },
