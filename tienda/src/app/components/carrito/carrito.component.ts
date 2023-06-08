@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { io } from "socket.io-client";
@@ -7,6 +7,12 @@ import { GuestService } from 'src/app/services/guest.service';
 declare var iziToast:any;
 declare var Cleave:any;
 declare var StickySidebar:any;
+declare var paypal:any;
+
+interface HtmlInputEvent extends Event{
+  target : HTMLInputElement & EventTarget;
+} 
+
 
 @Component({
   selector: 'app-carrito',
@@ -14,6 +20,9 @@ declare var StickySidebar:any;
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit{
+
+  @ViewChild('paypalButton', { static: true })
+  paypalElement!: ElementRef;
 
   public id_cliente;
   public token;
@@ -25,18 +34,24 @@ export class CarritoComponent implements OnInit{
   public direccion_principal : any = {};
   public envios: Array<any> = [];
   public precio_envio: any = "0";
+  public venta : any = {};
+  public dventa : Array<any> = [];
+
 
   constructor(
     private _clienteService: ClienteService,
-    private _guestService: GuestService
+    private _guestService: GuestService,
+    private elementRef: ElementRef
   ){
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
+    this.venta.cliente = this.id_cliente;
     this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
       response=>{
         this.carrito_arr = response.data;
         this.calcular_carrito();
+        this.calcular_total('Envio Gratis');
       }
     );
       this._guestService.get_Envios().subscribe(
@@ -62,6 +77,40 @@ export class CarritoComponent implements OnInit{
       var sidebar = new StickySidebar('.sidebar-sticky', {topSpacing: 20});
     });
     this.get_direccion_principal();
+
+    paypal.Buttons({
+      style: {
+          layout: 'horizontal'
+      },
+      createOrder: (data:any,actions:any)=>{
+  
+          return actions.order.create({
+            purchase_units : [{
+              description : 'Nombre del pago',
+              amount : {
+                currency_code : 'USD',
+                value: 999
+              },
+            }]
+          });
+        
+      },
+      onApprove : async (data:any,actions:any)=>{
+        const order = await actions.order.capture();
+        console.log(order)
+        this.venta.transaccion = order.purchase_units[0].payments.capture[0].id;
+        console.log(this.venta);
+        
+      },
+      onError : (err:any) =>{
+       
+      },
+      onCancel: function (data:any, actions:any) {
+        
+      }
+    }).render(this.paypalElement.nativeElement);
+  
+
   }
 
   get_direccion_principal(){
@@ -71,6 +120,7 @@ export class CarritoComponent implements OnInit{
           this.direccion_principal = undefined;
         }else{
           this.direccion_principal = response.data;
+          this.venta.direccion = this.direccion_principal._id;
         }
       }
     );
@@ -105,8 +155,12 @@ export class CarritoComponent implements OnInit{
     )
   }
 
-  calcular_total(){
+  calcular_total(envio_titulo:any){
     this.total_pagar = parseFloat(this.subtotal.toString()) + parseFloat(this.precio_envio);
+    this.venta.subtotal = this.total_pagar;
+    this.venta.envio_precio = parseInt(this.precio_envio);
+    this.venta.envio_titulo = envio_titulo;
+    console.log(this.venta);
   }
 
 }

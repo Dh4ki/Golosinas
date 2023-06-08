@@ -42,4 +42,6 @@ export class GuestService {
     return this._http.get('./assets/envios.json');
   }
 
+
+
 }
