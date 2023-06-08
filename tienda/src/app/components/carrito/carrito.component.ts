@@ -92,10 +92,15 @@ export class CarritoComponent implements OnInit{
       },
       onApprove : async (data:any,actions:any)=>{
         const order = await actions.order.capture();
-        console.log(order)
-        this.venta.transaccion = order.purchase_units[0].payments.capture[0].id;
-        console.log(this.dventa);
         
+        this.venta.transaccion = order.purchase_units[0].payments.capture[0].id;
+        
+        this.venta.detalles = this.dventa;
+        this._clienteService.registro_compra_cliente(this.venta, this.token).subscribe(
+          response =>{
+            console.log(response);
+          }
+        );
       },
       onError : (err:any) =>{
        
