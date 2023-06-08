@@ -120,6 +120,7 @@ export class ShowProductoComponent implements OnInit{
           cantidad: this.carrito_data.cantidad,
           variedad: this.carrito_data.variedad
         }
+        console.log(data);
         this.btn_cart = true;
         this._clienteService.agregar_carrito_cliente(data,this.token).subscribe(
           response =>{

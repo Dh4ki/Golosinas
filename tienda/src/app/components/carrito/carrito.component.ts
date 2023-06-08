@@ -41,6 +41,8 @@ export class CarritoComponent implements OnInit{
   public btn_load = false;
   public carrito_load = true;
   public user : any = {};
+  public error_cupon = '';
+  public descuento =0;
 
 
   constructor(
@@ -104,7 +106,11 @@ export class CarritoComponent implements OnInit{
         this.venta.detalles = this.dventa;
         this._clienteService.registro_compra_cliente(this.venta, this.token).subscribe(
           response =>{
-            this._router.navigate(['/']);
+            this._clienteService.enviar_correo_compra_cliente(response.venta._id, this.token).subscribe(
+              response=>{
+                this._router.navigate(['/']);
+              }
+            );
           }
         );
       },
@@ -216,13 +222,47 @@ export class CarritoComponent implements OnInit{
             this._clienteService.registro_compra_cliente(this.venta, this.token).subscribe(
               response =>{
                 this.btn_load = false;
-                this._router.navigate(['/']);
+                this._clienteService.enviar_correo_compra_cliente(response.venta._id, this.token).subscribe(
+                  response=>{
+                    this._router.navigate(['/']);
+                  }
+                );
+                
               }
             );
           }
         );
       }
     );
+  }
+
+  validar_cupon(){
+    if (this.venta.cupon) {
+      if (this.venta.cupon.toString().length <= 25) {
+        //SI ES VALIDO
+        this._clienteService.validar_cupon_admin(this.venta.cupon, this.token).subscribe(
+          response =>{
+            if (response.data != undefined) {
+              this.error_cupon ='';
+              if (response.data.tipo == 'Valor fijo') {
+                this.descuento = response.data.valor;
+                this.total_pagar = this.total_pagar - this.descuento;
+              }else if(response.data.tipo == 'Porcentaje'){
+                this.descuento = (this.total_pagar * response.data.valor)/100;
+                this.total_pagar = this.total_pagar - this.descuento;
+              }
+            }else{
+              this.error_cupon = 'El cupón no se pudo canjear';
+            }
+          }
+        );
+      }else{
+        //NO ES VALIDO
+        this.error_cupon = 'El cupón debe de ser menos de 25 caracteres';
+      }
+    }else{
+      this.error_cupon = 'El cupón no es válido';
+    }
   }
 
 }

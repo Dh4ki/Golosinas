@@ -125,4 +125,13 @@ export class ClienteService {
     return this._http.post('https://api.culqi.com/v2/charges',data,{headers:headers});
   }
 
+  enviar_correo_compra_cliente(id:any, token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url+'enviar_correo_compra_cliente/'+id,{headers:headers});
+  }
+
+  validar_cupon_admin(cupon:any, token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url+'validar_cupon_admin/'+cupon,{headers:headers});
+  }
 }
