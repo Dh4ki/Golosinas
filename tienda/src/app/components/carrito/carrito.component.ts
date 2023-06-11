@@ -129,6 +129,7 @@ export class CarritoComponent implements OnInit{
     this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
       response=>{
         this.carrito_arr = response.data;
+        console.log(this.carrito_arr);
         this.carrito_arr.forEach(element =>{
           this.dventa.push({
             producto: element.producto._id,

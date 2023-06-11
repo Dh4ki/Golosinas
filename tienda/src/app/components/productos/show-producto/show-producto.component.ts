@@ -29,6 +29,8 @@ export class ShowProductoComponent implements OnInit{
   public token;
   public btn_cart = false;
   public socket = io('http://localhost:4201');
+  public carrito_arr : Array<any> = [];
+  public subtotal = 0;
 
   constructor(
     private _route :ActivatedRoute,
@@ -42,6 +44,7 @@ export class ShowProductoComponent implements OnInit{
         this.slug = params['slug'];
         this._guestService.obtener_productos_slug_publico(this.slug).subscribe(
           response=>{
+            console.log(response);
             this.producto = response.data;
             this._guestService.listar_productos_recomendados_publico(this.producto.categoria).subscribe(
               response=>{
@@ -113,13 +116,17 @@ export class ShowProductoComponent implements OnInit{
 
   agregar_producto(){
     if (this.carrito_data.variedad) {
+      console.log(this.carrito_data);
       if (this.carrito_data.cantidad <= this.producto.stock) {
         let data = {
           producto: this.producto._id,
           cliente: localStorage.getItem('_id'),
           cantidad: this.carrito_data.cantidad,
-          variedad: this.carrito_data.variedad
+          variedad: this.carrito_data.variedad,
+          precio_sub: this.producto.precio * this.carrito_data.cantidad
         }
+        console.log(this.producto.precio);
+        console.log(this.carrito_data.cantidad);
         console.log(data);
         this.btn_cart = true;
         this._clienteService.agregar_carrito_cliente(data,this.token).subscribe(
@@ -169,5 +176,14 @@ export class ShowProductoComponent implements OnInit{
       });
     }
   }
+
+  calcular_carrito(){
+    this.subtotal = 0;
+    this.carrito_arr.forEach(element =>{
+      this.subtotal = this.subtotal + parseFloat(element.producto.precio);
+    });
+  }
+
+  
   
 }

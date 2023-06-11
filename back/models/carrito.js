@@ -8,6 +8,7 @@ var CarritoSchema = Schema({
     cliente: {type: Schema.ObjectId, ref:'cliente', required: true},
     cantidad: {type: Number,require: true},
     variedad: {type: String,require: true},
+    precio_sub: {type: Number,require: true},
     createdAt: {type: Date, default: Date.now, required: true}
 });
 

@@ -24,6 +24,7 @@ export class NavComponent implements OnInit{
   public url;
   public subtotal = 0;
   public socket = io('http://localhost:4201');
+  public hola:Number|any;
 
   constructor(
     private _clienteService: ClienteService,
@@ -62,6 +63,7 @@ export class NavComponent implements OnInit{
       response=>{
         this.carrito_arr = response.data;
         this.calcular_carrito();
+        console.log(this.carrito_arr);
       }
     );
   }
