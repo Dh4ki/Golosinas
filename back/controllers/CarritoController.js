@@ -6,6 +6,7 @@ const agregar_carrito_cliente = async function(req,res){
         let carrito_cliente = await Carrito.find({cliente:data.cliente, producto:data.producto});
         if (carrito_cliente.length == 0) {
             let reg = await Carrito.create(data);
+            console.log(reg)
             res.status(200).send({data:reg});
         }else if(carrito_cliente.length >= 1){
             res.status(200).send({data:undefined});

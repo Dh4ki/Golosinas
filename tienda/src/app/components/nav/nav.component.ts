@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { io } from "socket.io-client";
+import { GuestService } from 'src/app/services/guest.service';
 
 declare var $:any;
 declare var iziToast:any;
@@ -22,13 +23,15 @@ export class NavComponent implements OnInit{
   public op_cart = false;
   public carrito_arr : Array<any> = [];
   public url;
-  public subtotal = 0;
+  public subtotal:number = 0;
   public socket = io('http://localhost:4201');
-  public hola:Number|any;
+  public descuento_activo : any = undefined;
+
 
   constructor(
     private _clienteService: ClienteService,
-    private _router: Router
+    private _router: Router,
+    private _guestService : GuestService
   ){
     this.token = localStorage.getItem('token');
     this.id = localStorage.getItem('_id');
@@ -63,7 +66,7 @@ export class NavComponent implements OnInit{
       response=>{
         this.carrito_arr = response.data;
         this.calcular_carrito();
-        console.log(this.carrito_arr);
+       
       }
     );
   }
@@ -71,6 +74,16 @@ export class NavComponent implements OnInit{
   ngOnInit(): void {
     this.socket.on('new-carrito',this.obtener_carrito.bind(this));
     this.socket.on('new-carrito-add',this.obtener_carrito.bind(this));
+
+    this._guestService.obtener_descuento_activo().subscribe(
+      response =>{
+        if (response.data) {
+          this.descuento_activo = response.data[0];
+        }else{
+          this.descuento_activo = undefined;
+        }
+      }
+    );
   }
 
   logout(){
@@ -89,11 +102,18 @@ export class NavComponent implements OnInit{
     }
   }
 
-  calcular_carrito(){
-    this.subtotal = 0;
-    this.carrito_arr.forEach(element =>{
-      this.subtotal = this.subtotal + parseFloat(element.producto.precio);
-    });
+  calcular_carrito() {
+    this.subtotal = 0.0;
+    if (this.descuento_activo == undefined) {
+      this.carrito_arr.forEach(element => {
+        this.subtotal += element.precio_sub;
+      });
+    } else if (this.descuento_activo != undefined) {
+      this.carrito_arr.forEach(element => {
+        let new_precio = element.precio_sub - (element.precio_sub * this.descuento_activo.descuento) / 100;
+        this.subtotal += new_precio;
+      });
+    }
   }
 
   eliminar_item(id:any){

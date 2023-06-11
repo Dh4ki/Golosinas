@@ -234,12 +234,15 @@ export class IndexProductoComponent implements OnInit{
     let data = {
       producto: producto._id,
       cliente: localStorage.getItem('_id'),
-      cantidad: 1,
+      cantidad: 1,  
       variedad: producto.variedades[0].titulo,
+      precio_sub: producto.precio * this.carrito_data.cantidad
     }
+    console.log(producto.precio)
     this.btn_cart = true;
     this._clienteService.agregar_carrito_cliente(data,this.token).subscribe(
       response =>{
+        
         if (response.data == undefined) {
           iziToast.show({
             title: 'ERROR',
