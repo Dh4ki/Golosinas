@@ -25,7 +25,7 @@
     <form class="form-inline pt-2">
       <label class="sr-only" for="inline-form-input-name">Apellidos</label>
       <input
-        class="form-control mb-3 mr-sm-4"
+        class="form-control mb-3 mr-sm-4 col-4"
         (keyup)="filtro('apellidos')"
         name="filtro_apellidos"
         [(ngModel)]="filtro_apellidos"
@@ -39,7 +39,7 @@
           <div class="input-group-text">@</div>
         </div>
         <input
-          class="form-control"
+          class="form-control col-20"
           (keyup)="filtro('correo')"
           type="text"
           name="filtro_correo"

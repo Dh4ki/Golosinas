@@ -1,4 +1,6 @@
 var Descuento = require('../models/descuento');
+var fs = require('fs');
+var path = require('path');
 
 const registro_descuento_admin = async function(req,res){
     if (req.user) {
@@ -22,7 +24,7 @@ const listar_descuentos_admin = async function(req,res){
     if (req.user) {
         if (req.user.role=='admin') {
             var filtro = req.params['filtro'];
-            let reg = await Descuento.find({titulo: new RegExp(filtro, 'i')});
+            let reg = await Descuento.find({titulo: new RegExp(filtro, 'i')}).sort({createdAt: -1});
             res.status(200).send({data:reg});
         }else{
             res.status(500).send({message: 'NoAccess'});
@@ -69,6 +71,7 @@ const actualizar_descuento_admin = async function(req,res){
         if (req.user.role=='admin') {
             let id = req.params['id'];
             let data=req.body;
+
             if (req.files) {
                 //SI HAY IMAGEN
                 var img_path = req.files.banner.path;
@@ -76,10 +79,10 @@ const actualizar_descuento_admin = async function(req,res){
                 var banner_name = name[2];
                 let reg = await Descuento.findByIdAndUpdate({_id:id},{
                     titulo: data.titulo,
-                    banner: banner_name,
                     descuento: data.descuento,
                     fecha_inicio: data.fecha_inicio,
-                    fecha_fin: data.fecha_fin
+                    fecha_fin: data.fecha_fin,
+                    banner: banner_name
                 });
                 fs.stat('./uploads/descuentos/'+reg.banner,function(err){
                     if (!err) {
