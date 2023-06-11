@@ -31,6 +31,7 @@ export class ShowProductoComponent implements OnInit{
   public socket = io('http://localhost:4201');
   public carrito_arr : Array<any> = [];
   public subtotal = 0;
+  public descuento_activo : any = undefined;
 
   constructor(
     private _route :ActivatedRoute,
@@ -58,7 +59,6 @@ export class ShowProductoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
     setTimeout(()=>{
       tns({
         container: '.cs-carousel-inner',
@@ -73,14 +73,12 @@ export class ShowProductoComponent implements OnInit{
         navAsThumbnails: true,
         gutter: 15,
       });
-
       var e = document.querySelectorAll(".cs-gallery");
       if (e.length){
         for (var t = 0; t < e.length; t++){
           lightGallery(e[t], { selector: ".cs-gallery-item", download: !1, videojs: !0, youtubePlayerParams: { modestbranding: 1, showinfo: 0, rel: 0 }, vimeoPlayerParams: { byline: 0, portrait: 0 } });
         }
       }
-
       tns({
         container: '.cs-carousel-inner-two',
         controlsText: ['<i class="cxi-arrow-left"></i>', '<i class="cxi-arrow-right"></i>'],
@@ -112,6 +110,15 @@ export class ShowProductoComponent implements OnInit{
         }
       });
     },500);
+    this._guestService.obtener_descuento_activo().subscribe(
+      response =>{
+        if (response.data) {
+          this.descuento_activo = response.data[0];
+        }else{
+          this.descuento_activo = undefined;
+        }
+      }
+    );
   }
 
   agregar_producto(){

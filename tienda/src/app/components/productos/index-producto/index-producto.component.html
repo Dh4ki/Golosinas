@@ -16,6 +16,11 @@
       <!-- Page container -->
       <section class="container pt-3 pb-5 pb-md-6 mb-2 mb-lg-0">
 
+        <div class="row mb-5" *ngIf="descuento_activo != undefined">
+          <div class="col-12">
+            <img [src]="url+'obtener_banner_descuento/'+descuento_activo.banner" style="width: 100% !important;">
+          </div>
+        </div>
 
         <!-- Toolbar + Pagination -->
         <div class="row mb-4 pb-2">
