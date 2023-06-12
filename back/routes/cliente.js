@@ -29,6 +29,7 @@ api.post('/enviar_mensaje_contanto', clienteController.enviar_mensaje_contanto);
 
 //ORDENES
 api.get('/obtener_ordenes_cliente/:id',auth.auth, clienteController.obtener_ordenes_cliente);
+api.get('/obtener_detalles_ordenes_cliente/:id',auth.auth, clienteController.obtener_detalles_ordenes_cliente);
 
 
 module.exports = api;

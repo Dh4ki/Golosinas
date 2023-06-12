@@ -140,11 +140,11 @@ export class CarritoComponent implements OnInit{
     this._clienteService.obtener_carrito_cliente(this.id_cliente, this.token).subscribe(
       response=>{
         this.carrito_arr = response.data;
-        console.log(this.carrito_arr);
+        console.log(this.carrito_arr)
         this.carrito_arr.forEach(element =>{
           this.dventa.push({
             producto: element.producto._id,
-            subtotal: element.producto.precio,
+            subtotal: element.precio_sub,
             variedad: element.variedad,
             cantidad: element.cantidad,
             cliente: localStorage.getItem('_id')
@@ -233,6 +233,7 @@ export class CarritoComponent implements OnInit{
           "email": this.user.email,
           "source_id": response.id
         }
+        console.log(charge)
         this._clienteService.get_charge_culqi(charge).subscribe(
           response=>{
             this.venta.transaccion = response.id;

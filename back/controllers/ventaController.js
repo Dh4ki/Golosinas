@@ -20,15 +20,16 @@ const registro_compra_cliente = async function(req,res){
         var serie;
         var correlativo;
         var n_venta;
-
-        if (venta_last == 0) {
+        console.log(last_nventa)
+        if (venta_last.length == 0) {
             serie = '001';
             correlativo = '000001';
             n_venta = serie+'-'+correlativo;
         }else{
             //>=1 registro
-            var last_nventa = venta_last[0].n_venta;
+            var last_nventa = venta_last[0].nventa;
             var arr_nventa = last_nventa.split('-');
+
             if (arr_nventa[1] != '999999') {
                 var new_correlativo = zfill(parseInt(arr_nventa[1])+1,6);
                 n_venta = arr_nventa[0]+ '-'+new_correlativo;
