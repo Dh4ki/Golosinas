@@ -57,4 +57,9 @@ export class GuestService {
     return this._http.get(this.url+'listar_productos_masvendidos_publico',{headers:headers});
   }
 
+  enviar_mensaje_contanto(data:any):Observable<any>{
+    let headers = new HttpHeaders().set('Content-Type','application/json');
+    return this._http.post(this.url+'enviar_mensaje_contanto',data,{headers:headers});
+  }
+
 }
