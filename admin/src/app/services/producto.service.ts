@@ -94,4 +94,9 @@ export class ProductoService {
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
       return this._http.put(this.url+'eliminar_imagen_galeria_admin/'+id,data,{headers:headers});
   }
+
+  obtener_reviews_producto_publico(id:any):Observable<any>{
+    let headers = new HttpHeaders().set('Content-Type','application/json');
+    return this._http.get(this.url+'obtener_reviews_producto_publico/'+id,{headers:headers});
+  }
 }
