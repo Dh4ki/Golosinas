@@ -1,6 +1,8 @@
 'use strict'
 
 var Cliente = require('../models/cliente');
+var Venta = require('../models/venta');
+var Dventa = require('../models/dventa');
 var Contacto = require('../models/contacto');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
@@ -223,6 +225,24 @@ const actualizar_perfil_cliente_guest=async function(req,res){
 
 
 /****************************************************************************/
+//ÓRDENES
+
+const obtener_ordenes_cliente = async function (req,res){
+    if (req.user) {
+        var id = req.params['id'];
+        let reg = await Venta.find({cliente: id}).sort({createdAt: -1});
+        if (reg.length >= 1) {
+            res.status(200).send({data: reg});
+        }else if (reg.length == 0) {
+            res.status(200).send({data: undefined});
+        }
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
+
+/****************************************************************************/
 //DIRECCIONES
 
 const registro_direccion_cliente = async function(req,res) {
@@ -310,5 +330,6 @@ module.exports = {
     obtener_direcciones_todos_cliente,
     cambiar_direccion_principal_cliente,
     obtener_direccion_principal_cliente,
-    enviar_mensaje_contanto
+    enviar_mensaje_contanto,
+    obtener_ordenes_cliente
 }

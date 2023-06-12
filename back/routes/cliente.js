@@ -24,8 +24,11 @@ api.get('/obtener_direcciones_todos_cliente/:id',auth.auth, clienteController.ob
 api.put('/cambiar_direccion_principal_cliente/:id/:cliente',auth.auth, clienteController.cambiar_direccion_principal_cliente);
 api.get('/obtener_direccion_principal_cliente/:id',auth.auth, clienteController.obtener_direccion_principal_cliente);
 
-//ONTACTO
+//CONTACTO
 api.post('/enviar_mensaje_contanto', clienteController.enviar_mensaje_contanto);
+
+//ORDENES
+api.get('/obtener_ordenes_cliente/:id',auth.auth, clienteController.obtener_ordenes_cliente);
 
 
 module.exports = api;
