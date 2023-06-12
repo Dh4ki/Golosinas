@@ -3,6 +3,7 @@
 var Cliente = require('../models/cliente');
 var Venta = require('../models/venta');
 var Dventa = require('../models/dventa');
+var Review = require('../models/review');
 var Contacto = require('../models/contacto');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
@@ -321,7 +322,7 @@ const obtener_direccion_principal_cliente = async function (req,res){
 
 
 /****************************************************************************/
-//DIRECCIONES
+//CONTACTO
 
 const enviar_mensaje_contanto = async function (req,res){
     let data = req.body;
@@ -330,6 +331,35 @@ const enviar_mensaje_contanto = async function (req,res){
     res.status(200).send({data:reg});
 }
 
+
+/****************************************************************************/
+//REVIEWS
+
+const emitir_review_producto_cliente = async function (req,res){
+    if (req.user) {
+        let data = req.body;
+        let reg = await Review.create(data);
+        res.status(200).send({data:reg});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
+const obtener_review_producto_cliente = async function (req,res){
+    let id = req.params['id'];
+    let reg = await Review.find({producto:id}).sort({createdAt: -1});
+    res.status(200).send({data:reg});
+}
+
+const obtener_reviews_cliente = async function (req,res){
+    if (req.user) {
+        let id = req.params['id'];
+        let reg = await Review.find({cliente: id}).populate('cliente');
+        res.status(200).send({data:reg});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
 
 module.exports = {
     registro_cliente,
@@ -347,5 +377,8 @@ module.exports = {
     obtener_direccion_principal_cliente,
     enviar_mensaje_contanto,
     obtener_ordenes_cliente,
-    obtener_detalles_ordenes_cliente
+    obtener_detalles_ordenes_cliente,
+    emitir_review_producto_cliente,
+    obtener_review_producto_cliente,
+    obtener_reviews_cliente
 }
