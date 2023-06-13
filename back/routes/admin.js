@@ -13,5 +13,6 @@ api.get('/obtener_mensajes_admin',auth.auth,adminController.obtener_mensajes_adm
 api.put('/cerrar_mensaje_admin/:id',auth.auth,adminController.cerrar_mensaje_admin);
 
 api.get('/obtener_ventas_admin/:desde?/:hasta?',auth.auth,adminController.obtener_ventas_admin);
+api.get('/kpi_ganancia_mensuales_admin',auth.auth,adminController.kpi_ganancia_mensuales_admin);
 
 module.exports = api;
