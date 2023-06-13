@@ -55,6 +55,7 @@ export class IndexProductoComponent implements OnInit{
         if (this.route_categoria) {
           this._clienteService.listar_productos_publico('').subscribe(
             response=>{
+
               this.productos = response.data;
               this.productos = this.productos.filter(item=>item.categoria.toLowerCase() == this.route_categoria);
               this.load_data = false;
@@ -63,6 +64,7 @@ export class IndexProductoComponent implements OnInit{
         }else{
           this._clienteService.listar_productos_publico('').subscribe(
             response=>{
+              console.log(response)
               this.productos = response.data;
               this.load_data = false;
             }
