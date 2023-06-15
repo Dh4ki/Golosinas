@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- Favicon and Touch Icons-->
+  <link rel="stylesheet" href="assets/css/chat.css">
+  <link href="assets/css/chatBot.css" rel="stylesheet" type="text/css"/>
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
@@ -170,7 +172,7 @@
   <!-- Page loading spinner-->
   <div class="cs-page-loading active">
     <div class="cs-page-loading-inner">
-      <div class="cs-page-spinner"></div><span>Loading...</span>
+      <div class="cs-page-spinner"></div><span>Cargando...</span>
     </div>
   </div>
 
@@ -178,14 +180,62 @@
     <app-root></app-root>
   </main>
 
+    <!-- Back to top button-->
+    <body>
+      <!-- CHAT BAR BLOCK -->
+      <div class="chat-bar-collapsible">
+          <!-- <button class="collapsible">
+          </button> -->
+          <div class="collapsible">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square animate"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </div>
   
-
-
-  <!-- Back to top button-->
-  <a class="btn-scroll-top" href="#top" data-scroll data-fixed-element>
-    <span class="btn-scroll-top-tooltip text-muted font-size-sm mr-2">Subir</span>
-    <i class="btn-scroll-top-icon cxi-angle-up"></i>
-  </a>
+          <div class="content">
+              <div class="chat-header">
+                  <div class="chat-header-title">
+                      Tú asistente del Mundo Azucarado
+                  </div>
+              </div>
+              
+              <div class="full-chat-block">
+                  <!-- Message Container -->
+                  <div class="outer-container">
+                      <div class="chat-container">
+                          <!-- Messages -->
+                          <div id="chatbox">
+                              <h5 id="chat-timestamp"></h5>
+                              <p id="botStarterMessage" class="botText"><span>Cargando...</span></p>
+                          </div>
+  
+                          <!-- User input box -->
+                          <div class="chat-bar-input-block">
+                              <div id="userInput">
+                                  <input id="textInput" class="input-box" type="text" name="msg"
+                                      placeholder="Tap 'Enter' to send a message">
+                                  <p></p>
+                              </div>
+  
+                              <div class="chat-bar-icons">
+                                  <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
+                                      onclick="heartButton()"></i>
+                                  <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                                      onclick="sendButton()"></i>
+                              </div>
+                          </div>
+  
+                          <div id="chat-bar-bottom">
+                              <p></p>
+                          </div>
+  
+                      </div>
+                  </div>
+  
+              </div>
+          </div>
+  
+      </div>
+  
+    </body>
 
 
   <!-- Vendor scripts: js libraries and plugins-->
@@ -209,5 +259,8 @@
 
   <script src="https://www.paypal.com/sdk/js?client-id=ATdJdbRDsotmeZ7d4V3Hev8kgqjHXeOQ6ucXyxKMUSrFLyfqCSl7ycdtawE7G5wkNS1bfrnXL2WvyQEk"></script>
 
+  <!-- SCRIPTS CHATBOT -->
+  <script src="assets/js/chat.js"></script>
+  <script src="assets/js//responses.js"></script>
 </body>
 </html>
