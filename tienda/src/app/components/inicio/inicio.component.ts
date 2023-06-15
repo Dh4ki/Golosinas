@@ -29,33 +29,33 @@ export class InicioComponent implements OnInit{
           if (element.titulo == 'Galletas') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/04.jpg'
+              portada: 'assets/img/ecommerce/home/galletas.jpg'
             });
           }else if (element.titulo == 'Caramelos') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/05.jpg'
+              portada: 'assets/img/ecommerce/home/caramelos.jpg'
             });
           }else if (element.titulo == 'Helados') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/06.jpg'
+              portada: 'assets/img/ecommerce/home/helados.jpg'
             });
           }
           else if (element.titulo == 'Chocolates') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/07.jpg'
+              portada: 'assets/img/ecommerce/home/chocolates.jpg'
             });
           }else if (element.titulo == 'Pastillas') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/08.jpg'
+              portada: 'assets/img/ecommerce/home/pastillas.jpg'
             });
           }else if (element.titulo == 'Chicles') {
             this.categorias.push({
               titulo: element.titulo,
-              portada: 'assets/img/ecommerce/home/categories/09.jpg'
+              portada: 'assets/img/ecommerce/home/chicles.jpg'
             });
           }
           
