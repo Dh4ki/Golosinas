@@ -100,6 +100,8 @@ const actualizar_producto_admin=async function(req,res){
                     categoria: data.categoria,
                     descripcion: data.descripcion,
                     contenido: data.contenido,
+                    fvencimiento_lote: data.fvencimiento_lote,
+                    fvencimiento_lote: data.formatotipoDate,
                     portada: portada_name
                 });
                 fs.stat('./uploads/productos/'+reg.portada,function(err){
@@ -120,6 +122,8 @@ const actualizar_producto_admin=async function(req,res){
                     categoria: data.categoria,
                     descripcion: data.descripcion,
                     contenido: data.contenido,
+                    fvencimiento_lote: data.fvencimiento_lote,
+                    fvencimiento_lote: data.formatotipoDate,
                 });
                 res.status(200).send({data:reg});
             }
@@ -296,6 +300,27 @@ const obtener_reviews_producto_publico = async function(req,res){
     res.status(200).send({data:reviews});
 }
 
+//PRODUCTOS CON DESCUENTO
+const listar_productowdsc_publico = async function(req,res){
+    //Obetener la fecha actual
+    var fechaactual = new Date();
+//Calcular la fecha límite para aplicar el descuento
+    var fechalimite = new Date();
+    fechalimite.setDate(fechalimite.getDate() + 15);
+//descuento
+    var descuento = 0.10
+//busca los productos por vencerse
+    let reg = await Producto.find({formatotipoDate: {$gte: fechaactual, //Fecha de vencimiento mayor o igual a la fecha actual
+    $lt: fechalimite}}).sort({createdAt:-1});
+//por cada producto encontrado aplico el precio con descuento
+    reg.forEach(reg => {
+        reg.precio = reg.precio - (reg.precio * descuento);
+    });
+    res.status(200).send({data:reg}); 
+
+}
+
+
 module.exports = {
     registro_producto_admin,
     listar_productos_admin,
@@ -314,5 +339,6 @@ module.exports = {
     listar_productos_recomendados_publico,
     listar_productos_nuevos_publico,
     listar_productos_masvendidos_publico,
-    obtener_reviews_producto_publico
+    obtener_reviews_producto_publico,
+    listar_productowdsc_publico,
 }

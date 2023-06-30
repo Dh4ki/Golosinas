@@ -18,6 +18,8 @@ var ProductoSchema = Schema({
     categoria: {type: String ,required: true},
     titulo_variedad: {type: String ,required: false},
     estado: {type: String, default: 'Edicion' ,required: true},
+    fvencimiento_lote: {type: String, required: false},
+    formatotipoDate: {type: Date, required: false},
     createdAt: {type: Date, default: Date.now, required: true}
 });
 

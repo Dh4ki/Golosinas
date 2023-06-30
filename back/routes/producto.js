@@ -31,5 +31,6 @@ api.get('/listar_productos_recomendados_publico/:categoria',productoController.l
 api.get('/listar_productos_nuevos_publico',productoController.listar_productos_nuevos_publico);
 api.get('/listar_productos_masvendidos_publico',productoController.listar_productos_masvendidos_publico);
 api.get('/obtener_reviews_producto_publico/:id',productoController.obtener_reviews_producto_publico);
+api.get('/listar_productowdsc_publico',productoController.listar_productowdsc_publico);
 
 module.exports = api;

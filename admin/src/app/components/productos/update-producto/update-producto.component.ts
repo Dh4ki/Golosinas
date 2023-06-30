@@ -72,6 +72,8 @@ export class UpdateProductoComponent implements OnInit{
         data.portada = this.file;
       }
       data.titulo = this.producto.titulo;
+      data.fvencimiento_lote = this.producto.fvencimiento_lote;
+      data.formatotipoDate = this.producto.formatotipoDate; //
       data.stock = this.producto.stock;
       data.precio = this.producto.precio;
       data.categoria = this.producto.categoria;

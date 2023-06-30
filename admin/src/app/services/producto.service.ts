@@ -25,6 +25,8 @@ export class ProductoService {
     fd.append('descripcion',data.descripcion);
     fd.append('contenido',data.contenido);
     fd.append('categoria',data.categoria);
+    fd.append('fvencimiento_lote',data.fvencimiento_lote);
+    fd.append('formatotipoDate',data.fvencimiento_lote); //
     fd.append('portada',file);
     return this._http.post(this.url+'registro_producto_admin',fd,{headers:headers});
   }
@@ -49,6 +51,8 @@ export class ProductoService {
       fd.append('descripcion',data.descripcion);
       fd.append('contenido',data.contenido);
       fd.append('categoria',data.categoria);
+      fd.append('fvencimiento_lote',data.fvencimiento_lote);
+    fd.append('formatotipoDate',data.fvencimiento_lote); //
       fd.append('portada',data.portada);
       return this._http.put(this.url+'actualizar_producto_admin/'+id,fd,{headers:headers});
     }else{
